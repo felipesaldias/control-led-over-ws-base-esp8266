@@ -7,6 +7,7 @@
 using namespace websockets2_generic;
 int LED_D1 = 5; // d1 pertenece al 5
 int D1_STATUS = 0;
+String PRENDE= "PRENDE";
 void TURN_ON(){
   digitalWrite(LED_D1, HIGH);
   D1_STATUS = 1;
@@ -22,19 +23,22 @@ void onMessageCallback(WebsocketsMessage message)
   deserializeJson(doc, message.data()); 
   Serial.print("Got Message: ");
   Serial.println(message.data());
-  if (message.data()=="{\"message\":\"PRENDE\"}"){
+  /*if (message.data()=="{\"message\":\"PRENDE\"}"){
     Serial.println("IGUALES");
     TURN_ON();
     }
    if (message.data()=="{\"message\":\"APAGA\"}"){
     Serial.println("IGUALEapagaS");
     TURN_OFF();
-    }
-  const char* message_ = doc["message"];
-  const char* prender = "PRENDE";
+    }*/
+  //const char* message_ = doc["message"];
+  //const char* prender = "PRENDE";
+  const String message_ = doc["message"].as<String>();
+  const String prender = "PRENDE";
+  const String apagar = "PRENDE";
   //Serial.println(message_);
   if (message_ == prender){
-    Serial.print("HOaaaLA");
+    
     TURN_ON();
     }
     if (message_== "APAGA"){
@@ -102,7 +106,7 @@ void setup()
   client.onEvent(onEventsCallback);
 
   // Connect to server
-  client.connect("192.168.1.5", 4000, "/websockets");
+  client.connect("192.168.1.9", 4000, "/websockets");
 
   // Send a message
   String WS_msg = "{\"message\":\"hola\"}";//String("Hello to Server from ") + BOARD_NAME;
